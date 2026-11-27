@@ -1,0 +1,1 @@
+public record DriverResponse(Guid Id, int X, int Y);
