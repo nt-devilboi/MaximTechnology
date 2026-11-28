@@ -19,7 +19,6 @@ public class NearestDrivers(int count)
         if (distance < Bound) _heap.EnqueueDequeue(driver, -distance);
     }
 
-    // в приоритете лежит -distance, поэтому ближние — с наибольшим приоритетом
     public List<Driver> ToList()
     {
         return _heap.UnorderedItems

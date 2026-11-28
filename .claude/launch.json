@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "MaximTechnology.Web", "--no-build", "--no-launch-profile", "--", "--urls", "http://localhost:5177", "--environment", "Development"],
+      "port": 5177,
+      "autoPort": false
+    }
+  ]
+}

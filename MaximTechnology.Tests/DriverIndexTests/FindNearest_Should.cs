@@ -3,10 +3,9 @@ using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Tests.DriverIndexTests;
 
-[TestFixtureSource(typeof(DriverIndexFixture), nameof(Indexes))]
-public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverIndexFixture(createIndex)
+[TestFixtureSource(typeof(DriverIndexFixture), nameof(Searches))]
+public class FindNearest_Should(INearestSearch search) : DriverIndexFixture
 {
-    // (5,8) раньше (7,7): по шагам 3 < 4, а по прямой было бы наоборот
     [Test]
     public void FindNearest_MoreDriversThanCount_ReturnsFiveNearestSortedByDistance()
     {
@@ -14,12 +13,12 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         List<Driver> far = [NewDriver(0, 0), NewDriver(9, 9), NewDriver(0, 9), NewDriver(9, 0)];
         var sut = CreateIndex([..far, ..nearest]);
 
-        var result = sut.FindNearest(new OrderLocation(5, 5));
+        var result = search.Find(sut, new OrderLocation(5, 5));
 
         Assert.That(result, Is.EqualTo(nearest));
     }
 
-    // много добавлений, перемещений и удалений подряд - свои структуры алгоритмов не должны разойтись с сеткой
+    // много добавлений, перемещений и удалений подряд - алгоритм должен видеть актуальное состояние хранилища
     [TestCase(7)]
     [TestCase(99)]
     public void FindNearest_AfterRandomMovesAndRemoves_ReturnsDriversWithMinimalDistances(int seed)
@@ -46,7 +45,7 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         {
             var order = new OrderLocation(random.Next(map.X), random.Next(map.Y));
 
-            var result = sut.FindNearest(order);
+            var result = search.Find(sut, order);
 
             var expectedDistances = expected.Values.Select(d => Steps(d, order)).OrderBy(d => d)
                 .Take(DriverIndex.NearestCount);
@@ -61,7 +60,7 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
     {
         var sut = CreateIndex();
 
-        var result = sut.FindNearest(new OrderLocation(5, 5));
+        var result = search.Find(sut, new OrderLocation(5, 5));
 
         Assert.That(result, Is.Empty);
     }
@@ -74,7 +73,7 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         var third = NewDriver(0, 0);
         var sut = CreateIndex(third, first, second);
 
-        var result = sut.FindNearest(new OrderLocation(5, 5));
+        var result = search.Find(sut, new OrderLocation(5, 5));
 
         Assert.That(result, Is.EqualTo(new[] { first, second, third }));
     }
@@ -85,7 +84,7 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         var driver = NewDriver(9, 0);
         var sut = CreateIndex(driver);
 
-        var result = sut.FindNearest(new OrderLocation(0, 9));
+        var result = search.Find(sut, new OrderLocation(0, 9));
 
         Assert.That(result, Is.EqualTo(new[] { driver }));
     }
@@ -96,7 +95,7 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         var onOrderCell = NewDriver(3, 4);
         var sut = CreateIndex(NewDriver(3, 5), onOrderCell, NewDriver(2, 4));
 
-        var result = sut.FindNearest(new OrderLocation(3, 4));
+        var result = search.Find(sut, new OrderLocation(3, 4));
 
         Assert.That(result[0], Is.EqualTo(onOrderCell));
     }
@@ -108,7 +107,7 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         List<Driver> tied = [NewDriver(5, 7), NewDriver(7, 5), NewDriver(3, 5), NewDriver(6, 6)];
         var sut = CreateIndex([NewDriver(0, 0), ..tied, ..closer, NewDriver(9, 9)]);
 
-        var result = sut.FindNearest(new OrderLocation(5, 5));
+        var result = search.Find(sut, new OrderLocation(5, 5));
 
         Assert.That(result, Has.Count.EqualTo(DriverIndex.NearestCount));
         Assert.That(result.Take(closer.Count), Is.EquivalentTo(closer));

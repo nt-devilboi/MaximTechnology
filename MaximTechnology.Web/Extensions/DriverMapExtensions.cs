@@ -17,7 +17,7 @@ public static class DriverMapExtensions
             throw new ApplicationException("not correct MapSettings");
 
         var map = new Map { X = x, Y = y };
-        var driverIndex = new RingDriverIndex(map);
+        var driverIndex = new DriverIndex(map);
 
         var drivers = new Driver[]
         {

@@ -16,8 +16,4 @@
         <ProjectReference Include="..\MaximTechnology\MaximTechnology.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Dto\"/>
-    </ItemGroup>
-
 </Project>

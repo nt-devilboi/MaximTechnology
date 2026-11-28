@@ -13,7 +13,7 @@ public static class DriverEndpointsExtensions
                 if (reasons != null) return Results.BadRequest(reasons);
 
                 return driver is null
-                    ? Results.NotFound()
+                    ? Results.NotFound("Свободных водителей нет")
                     : Results.Ok(driver);
             })
             .Produces<DriverResponse>()

@@ -3,17 +3,16 @@ using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Tests.DriverIndexTests;
 
-public abstract class DriverIndexFixture(Func<Map, DriverIndex> createIndex)
+public abstract class DriverIndexFixture
 {
     protected static readonly Map DefaultMap = new() { X = 10, Y = 10 };
 
-    public static IEnumerable<TestFixtureData> Indexes()
+    public static IEnumerable<TestFixtureData> Searches()
     {
         return
         [
-            Index(map => new BruteForceDriverIndex(map), nameof(BruteForceDriverIndex)),
-            Index(map => new RingDriverIndex(map), nameof(RingDriverIndex)),
-            Index(map => new RowsDriverIndex(map), nameof(RowsDriverIndex))
+            Search(new BruteForceSearch(), nameof(BruteForceSearch)),
+            Search(new RingSearch(), nameof(RingSearch))
         ];
     }
 
@@ -22,21 +21,21 @@ public abstract class DriverIndexFixture(Func<Map, DriverIndex> createIndex)
         return new Driver(Guid.NewGuid(), x, y);
     }
 
-    protected DriverIndex CreateIndex(params Driver[] drivers)
+    protected static DriverIndex CreateIndex(params Driver[] drivers)
     {
         return CreateIndex(DefaultMap, drivers);
     }
 
-    protected DriverIndex CreateIndex(Map map, IEnumerable<Driver> drivers)
+    protected static DriverIndex CreateIndex(Map map, IEnumerable<Driver> drivers)
     {
-        var index = createIndex(map);
+        var index = new DriverIndex(map);
         foreach (var driver in drivers) index.Upsert(driver);
 
         return index;
     }
 
-    private static TestFixtureData Index(Func<Map, DriverIndex> factory, string name)
+    private static TestFixtureData Search(INearestSearch search, string name)
     {
-        return new TestFixtureData(factory).SetArgDisplayNames(name);
+        return new TestFixtureData(search).SetArgDisplayNames(name);
     }
 }

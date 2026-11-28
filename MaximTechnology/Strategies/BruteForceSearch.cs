@@ -2,13 +2,13 @@ using MaximTechnology.Entity;
 
 namespace MaximTechnology.Strategies;
 
-public class BruteForceDriverIndex(Map map) : DriverIndex(map)
+public class BruteForceSearch : INearestSearch
 {
-    protected override List<Driver> FindNearestCore(OrderLocation orderLocation, int count = NearestCount)
+    public List<Driver> Find(DriverIndex index, OrderLocation orderLocation, int count)
     {
         var nearest = new NearestDrivers(count);
 
-        foreach (var driver in Drivers)
+        foreach (var driver in index.Drivers)
             nearest.Offer(driver,
                 Math.Abs((long)driver.X - orderLocation.X) + Math.Abs((long)driver.Y - orderLocation.Y));
 

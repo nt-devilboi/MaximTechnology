@@ -2,16 +2,15 @@ using MaximTechnology.Entity;
 
 namespace MaximTechnology.Strategies;
 
-public class RingDriverIndex(Map map) : DriverIndex(map)
+public class RingSearch : INearestSearch
 {
-    private readonly int _m = map.Y;
-    private readonly int _n = map.X;
-
-    protected override List<Driver> FindNearestCore(OrderLocation orderLocation, int count = NearestCount)
+    public List<Driver> Find(DriverIndex index, OrderLocation orderLocation, int count)
     {
+        var n = index.Map.X;
+        var m = index.Map.Y;
         var maxRadius = Math.Max(
-            Math.Max(orderLocation.X, _n - 1 - orderLocation.X),
-            Math.Max(orderLocation.Y, _m - 1 - orderLocation.Y));
+            Math.Max(orderLocation.X, n - 1 - orderLocation.X),
+            Math.Max(orderLocation.Y, m - 1 - orderLocation.Y));
 
         var nearest = new NearestDrivers(count);
 
@@ -29,27 +28,27 @@ public class RingDriverIndex(Map map) : DriverIndex(map)
             var top = orderLocation.Y + r;
 
             var fromX = Math.Max(left, 0);
-            var toX = Math.Min(right, _n - 1);
+            var toX = Math.Min(right, n - 1);
             if (bottom >= 0)
                 for (var x = fromX; x <= toX; x++)
                     Check(x, bottom);
-            if (top < _m && top != bottom)
+            if (top < m && top != bottom)
                 for (var x = fromX; x <= toX; x++)
                     Check(x, top);
 
             var fromY = Math.Max(bottom + 1, 0);
-            var toY = Math.Min(top - 1, _m - 1);
+            var toY = Math.Min(top - 1, m - 1);
             if (left >= 0)
                 for (var y = fromY; y <= toY; y++)
                     Check(left, y);
-            if (right < _n && right != left)
+            if (right < n && right != left)
                 for (var y = fromY; y <= toY; y++)
                     Check(right, y);
         }
 
         void Check(int x, int y)
         {
-            var driver = DriverAt(x, y);
+            var driver = index.DriverAt(x, y);
             if (driver is null) return;
 
             nearest.Offer(driver, Math.Abs((long)x - orderLocation.X) + Math.Abs((long)y - orderLocation.Y));

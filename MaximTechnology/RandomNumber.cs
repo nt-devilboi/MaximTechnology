@@ -5,7 +5,6 @@ namespace MaximTechnology;
 
 public class RandomNumber(HttpClient httpClient)
 {
-    // внешний API не должен держать запрос: ждём недолго и уходим на локальный Random
     private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(2);
 
     public async Task<int> Next(int max)
