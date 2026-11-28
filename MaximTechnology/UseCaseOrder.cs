@@ -1,4 +1,5 @@
 using System.Drawing;
+using MaximTechnology.Dto;
 using MaximTechnology.Strategies;
 using Vostok.Logging.Abstractions;
 
@@ -8,7 +9,7 @@ public class UseCaseOrder(Map map, DriverIndex driverIndex, RandomNumber randomN
 {
     private readonly ILog log = log.ForContext(nameof(UseCaseOrder));
 
-    public async Task<DriverLocationResponse> Find(OrderRequest order)
+    public async Task<DriverLocationResult> Find(OrderRequest order)
     {
         try
         {
@@ -16,19 +17,19 @@ public class UseCaseOrder(Map map, DriverIndex driverIndex, RandomNumber randomN
             if (!map.Valid(location.X, location.Y))
             {
                 log.Warn("Координаты заказа вне карты: {Order}", order);
-                return new DriverLocationResponse(Reasons: "Координаты некорректны");
+                return new DriverLocationResult(Reasons: "Координаты некорректны");
             }
 
             var drivers = driverIndex.FindNearest(location);
 
-            if (drivers.Count == 0) return new DriverLocationResponse();
+            if (drivers.Count == 0) return new DriverLocationResult();
 
             var driver = drivers[await randomNumber.Next(drivers.Count)];
 
 
             var route = RouteBuilder.Build(new Point(location.X, location.Y), new Point(driver.X, driver.Y));
 
-            return new DriverLocationResponse(
+            return new DriverLocationResult(
                 new DriverResponse(driver,
                     route.Points.Count - 1,
                     route.Points.Select(x => new PointRecord(x.X, x.Y)).ToList()));
@@ -39,21 +40,6 @@ public class UseCaseOrder(Map map, DriverIndex driverIndex, RandomNumber randomN
             throw;
         }
     }
-}
-
-public record OrderRequest(Guid Id, int X, int Y);
-
-public record DriverLocationResponse(DriverResponse? Drivers = null, string? Reasons = null);
-
-public record DriverResponse(Driver Driver, int Distance, List<PointRecord> Route);
-
-public record PointRecord(int X, int Y);
-
-public class Driver(Guid id, int x, int y)
-{
-    public Guid Id { get; set; } = id;
-    public int X { get; set; } = x;
-    public int Y { get; set; } = y;
 }
 
 public record OrderLocation(int X, int Y);

@@ -1,3 +1,5 @@
+using MaximTechnology.Entity;
+
 namespace MaximTechnology.Strategies;
 
 public abstract class DriverIndex(Map map)

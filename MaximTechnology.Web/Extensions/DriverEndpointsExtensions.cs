@@ -1,3 +1,5 @@
+using MaximTechnology.Dto;
+
 namespace MaximTechnology.Web.Extensions;
 
 public static class DriverEndpointsExtensions
@@ -18,7 +20,7 @@ public static class DriverEndpointsExtensions
             .Produces(StatusCodes.Status404NotFound)
             .Produces<string>(StatusCodes.Status400BadRequest);
 
-        endpoints.MapPost("/drivers/location", (DriverUpSert driver, UseCaseDriver useCaseDriver) =>
+        endpoints.MapPost("/drivers/location", (DriverUpsert driver, UseCaseDriver useCaseDriver) =>
             {
                 var (message, reasons) = useCaseDriver.UpSertDriver(driver);
 

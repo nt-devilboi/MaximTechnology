@@ -1,3 +1,4 @@
+using MaximTechnology.Entity;
 using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Tests.DriverIndexTests;

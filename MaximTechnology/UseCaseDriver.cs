@@ -1,3 +1,5 @@
+using MaximTechnology.Dto;
+using MaximTechnology.Entity;
 using MaximTechnology.Strategies;
 using Vostok.Logging.Abstractions;
 
@@ -7,7 +9,7 @@ public class UseCaseDriver(Map map, DriverIndex driverIndex, ILog log)
 {
     private readonly ILog log = log.ForContext(nameof(UseCaseDriver));
 
-    public DriverUpsertResponse UpSertDriver(DriverUpSert driver)
+    public DriverUpsertResponse UpSertDriver(DriverUpsert driver)
     {
         try
         {
@@ -34,7 +36,3 @@ public class UseCaseDriver(Map map, DriverIndex driverIndex, ILog log)
         }
     }
 }
-
-public record DriverUpsertResponse(string? Message = null, string? Reasons = null);
-
-public record DriverUpSert(Guid Id, int X, int Y);

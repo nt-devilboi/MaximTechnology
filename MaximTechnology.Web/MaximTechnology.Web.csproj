@@ -8,12 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-        <PackageReference Include="Vostok.Logging.Console" Version="1.0.11" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Vostok.Logging.Console" Version="1.0.11"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MaximTechnology\MaximTechnology.csproj" />
+        <ProjectReference Include="..\MaximTechnology\MaximTechnology.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Dto\"/>
     </ItemGroup>
 
 </Project>

@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Vostok.Logging.Abstractions" Version="1.0.33" />
+        <PackageReference Include="Vostok.Logging.Abstractions" Version="1.0.33"/>
     </ItemGroup>
 
 </Project>

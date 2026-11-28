@@ -1,3 +1,5 @@
+using MaximTechnology.Entity;
+
 namespace MaximTechnology.Strategies;
 
 public class BruteForceDriverIndex(Map map) : DriverIndex(map)

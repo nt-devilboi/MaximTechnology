@@ -4,15 +4,15 @@ namespace MaximTechnology.Web;
 
 public class ParallelLimitMiddleware
 {
-    private readonly int Limit;
+    private readonly int _limit;
 
-    private readonly RequestDelegate next;
-    private int current;
+    private readonly RequestDelegate _next;
+    private int _current;
 
     public ParallelLimitMiddleware(RequestDelegate next, int limit)
     {
-        this.next = next;
-        Limit = limit;
+        _next = next;
+        _limit = limit;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -25,11 +25,11 @@ public class ParallelLimitMiddleware
 
         try
         {
-            await next.Invoke(context);
+            await _next.Invoke(context);
         }
         finally
         {
-            Interlocked.Decrement(ref current);
+            Interlocked.Decrement(ref _current);
         }
     }
 
@@ -38,11 +38,11 @@ public class ParallelLimitMiddleware
     {
         while (true)
         {
-            var observed = Volatile.Read(ref current);
-            if (observed >= Limit) return false;
+            var observed = Volatile.Read(ref _current);
+            if (observed >= _limit) return false;
 
 
-            if (Interlocked.CompareExchange(ref current, observed + 1, observed) == observed) return true;
+            if (Interlocked.CompareExchange(ref _current, observed + 1, observed) == observed) return true;
         }
     }
 }
