@@ -1,4 +1,6 @@
-namespace Maxim_Technology.Strategies;
+using Maxim_Technology;
+
+namespace MaximTechnology.Strategies;
 
 public class NearestDrivers(int count)
 {
@@ -18,9 +20,11 @@ public class NearestDrivers(int count)
     }
 
     // в приоритете лежит -distance, поэтому ближние — с наибольшим приоритетом
-    public List<Driver> ToList() =>
-        _heap.UnorderedItems
+    public List<Driver> ToList()
+    {
+        return _heap.UnorderedItems
             .OrderByDescending(item => item.Priority)
             .Select(item => item.Element)
             .ToList();
+    }
 }

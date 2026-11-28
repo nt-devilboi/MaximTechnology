@@ -1,5 +1,6 @@
 using System.Drawing;
-using Maxim_Technology.Strategies;
+using MaximTechnology;
+using MaximTechnology.Strategies;
 
 namespace Maxim_Technology;
 

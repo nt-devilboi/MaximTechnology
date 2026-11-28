@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace Maxim_Technology;
+namespace MaximTechnology;
 
 public class RandomNumber(HttpClient httpClient)
 {

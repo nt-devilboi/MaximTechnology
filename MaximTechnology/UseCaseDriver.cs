@@ -1,6 +1,7 @@
-using Maxim_Technology.Strategies;
+using Maxim_Technology;
+using MaximTechnology.Strategies;
 
-namespace Maxim_Technology;
+namespace MaximTechnology;
 
 public class UseCaseDriver(Map map, DriverIndex driverIndex)
 {

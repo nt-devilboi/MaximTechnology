@@ -1,5 +1,5 @@
 using Maxim_Technology;
-using Maxim_Technology.Strategies;
+using MaximTechnology.Strategies;
 using Microsoft.OpenApi.Models;
 
 namespace MaximTechnology.Web.Extensions;
@@ -14,9 +14,7 @@ public static class DriverMapExtensions
 
         if (settingsX == null || !int.TryParse(settingsX, out var x) || settingsY == null ||
             !int.TryParse(settingsY, out var y))
-        {
             throw new ApplicationException("not correct MapSettings");
-        }
 
         var map = new Map { X = x, Y = y };
         var driverIndex = new RingDriverIndex(map);
@@ -43,7 +41,7 @@ public static class DriverMapExtensions
             Title = "MaximTechnology",
             Version = "v1",
             Description = $"размер карты ({map.X}, {map.Y}) \n Водители, созданные при запуске:\n\n" +
-                          string.Join("\n", drivers.Select(d => $"- `{d.Id}` — ({d.X}, {d.Y})")),
+                          string.Join("\n", drivers.Select(d => $"- `{d.Id}` — ({d.X}, {d.Y})"))
         }));
 
         return services;

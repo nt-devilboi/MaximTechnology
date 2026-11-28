@@ -1,7 +1,7 @@
 using Maxim_Technology;
+using MaximTechnology;
 using MaximTechnology.Web;
 using MaximTechnology.Web.Extensions;
-using DriverResponse = MaximTechnology.Web.Dto.DriverResponse;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +29,7 @@ app.MapPost("/drivers/nearest", async (OrderRequest order, UseCaseOrder useCaseO
             ? Results.NotFound()
             : Results.Ok(driver);
     })
-    .Produces<Maxim_Technology.DriverResponse>()
+    .Produces<DriverResponse>()
     .Produces(StatusCodes.Status404NotFound)
     .Produces<string>(StatusCodes.Status400BadRequest);
 

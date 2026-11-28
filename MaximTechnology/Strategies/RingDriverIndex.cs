@@ -1,9 +1,11 @@
-namespace Maxim_Technology.Strategies;
+using Maxim_Technology;
+
+namespace MaximTechnology.Strategies;
 
 public class RingDriverIndex(Map map) : DriverIndex(map)
 {
-    private readonly int _n = map.X;
     private readonly int _m = map.Y;
+    private readonly int _n = map.X;
 
     protected override List<Driver> FindNearestCore(OrderLocation orderLocation, int count = NearestCount)
     {

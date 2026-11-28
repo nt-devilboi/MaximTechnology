@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Maxim_Technology;
+namespace MaximTechnology;
 
 public static class RouteBuilder
 {
@@ -23,7 +23,6 @@ public static class RouteBuilder
         {
             y += stepY;
             path.Add(new Point(x, y));
-            
         }
 
         return new Route(path);

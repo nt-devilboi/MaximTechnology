@@ -1,6 +1,6 @@
-using Maxim_Technology.Strategies;
+using Maxim_Technology;
 
-namespace Maxim_Technology;
+namespace MaximTechnology.Strategies;
 
 public class RowsDriverIndex(Map map) : DriverIndex(map)
 {
@@ -44,9 +44,11 @@ public class RowsDriverIndex(Map map) : DriverIndex(map)
             if (start < 0) start = ~start;
 
             for (var i = start; i < row.Count; i++)
-                if (!TryOffer(row[i], y)) break;
+                if (!TryOffer(row[i], y))
+                    break;
             for (var i = start - 1; i >= 0; i--)
-                if (!TryOffer(row[i], y)) break;
+                if (!TryOffer(row[i], y))
+                    break;
         }
 
         // false — водитель не ближе границы, дальше по строке в эту сторону будут только дальше

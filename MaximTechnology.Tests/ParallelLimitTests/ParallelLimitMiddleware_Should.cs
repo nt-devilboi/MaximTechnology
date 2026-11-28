@@ -21,6 +21,7 @@ public class ParallelLimitMiddleware_Should
         var tasks = new Task[requests];
 
         Parallel.For(0, requests, i => tasks[i] = sut.InvokeAsync(contexts[i]));
+
         gate.SetResult();
         await Task.WhenAll(tasks);
 

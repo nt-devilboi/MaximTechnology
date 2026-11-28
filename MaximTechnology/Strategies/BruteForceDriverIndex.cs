@@ -1,6 +1,6 @@
-using Maxim_Technology.Strategies;
+using Maxim_Technology;
 
-namespace Maxim_Technology;
+namespace MaximTechnology.Strategies;
 
 public class BruteForceDriverIndex(Map map) : DriverIndex(map)
 {
@@ -9,7 +9,8 @@ public class BruteForceDriverIndex(Map map) : DriverIndex(map)
         var nearest = new NearestDrivers(count);
 
         foreach (var driver in Drivers)
-            nearest.Offer(driver, Math.Abs((long)driver.X - orderLocation.X) + Math.Abs((long)driver.Y - orderLocation.Y));
+            nearest.Offer(driver,
+                Math.Abs((long)driver.X - orderLocation.X) + Math.Abs((long)driver.Y - orderLocation.Y));
 
         return nearest.ToList();
     }

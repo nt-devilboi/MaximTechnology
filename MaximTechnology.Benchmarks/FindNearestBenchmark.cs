@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using Maxim_Technology;
-using Maxim_Technology.Strategies;
+using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Benchmarks;
 
@@ -8,9 +8,9 @@ namespace MaximTechnology.Benchmarks;
 public class FindNearestBenchmark
 {
     private const int OrdersCount = 1_000;
+    private BruteForceDriverIndex _bruteForce = null!;
 
     private OrderLocation[] _orders = [];
-    private BruteForceDriverIndex _bruteForce = null!;
     private RingDriverIndex _ring = null!;
     private RowsDriverIndex _rows = null!;
 
@@ -43,13 +43,22 @@ public class FindNearestBenchmark
     }
 
     [Benchmark(Baseline = true, OperationsPerInvoke = OrdersCount)]
-    public List<Driver> BruteForce() => FindForAllOrders(_bruteForce);
+    public List<Driver> BruteForce()
+    {
+        return FindForAllOrders(_bruteForce);
+    }
 
     [Benchmark(OperationsPerInvoke = OrdersCount)]
-    public List<Driver> Ring() => FindForAllOrders(_ring);
+    public List<Driver> Ring()
+    {
+        return FindForAllOrders(_ring);
+    }
 
     [Benchmark(OperationsPerInvoke = OrdersCount)]
-    public List<Driver> Rows() => FindForAllOrders(_rows);
+    public List<Driver> Rows()
+    {
+        return FindForAllOrders(_rows);
+    }
 
     private List<Driver> FindForAllOrders(DriverIndex index)
     {

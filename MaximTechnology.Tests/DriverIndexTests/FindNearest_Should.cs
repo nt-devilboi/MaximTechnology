@@ -1,5 +1,5 @@
 using Maxim_Technology;
-using Maxim_Technology.Strategies;
+using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Tests.DriverIndexTests;
 
@@ -48,7 +48,8 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
 
             var result = sut.FindNearest(order);
 
-            var expectedDistances = expected.Values.Select(d => Steps(d, order)).OrderBy(d => d).Take(DriverIndex.NearestCount);
+            var expectedDistances = expected.Values.Select(d => Steps(d, order)).OrderBy(d => d)
+                .Take(DriverIndex.NearestCount);
             Assert.That(result, Is.Unique);
             Assert.That(result, Has.All.Matches<Driver>(d => ReferenceEquals(expected[d.Id], d)));
             Assert.That(result.Select(d => Steps(d, order)), Is.EqualTo(expectedDistances));
@@ -114,6 +115,8 @@ public class FindNearest_Should(Func<Map, DriverIndex> createIndex) : DriverInde
         Assert.That(tied, Is.SupersetOf(result.Skip(closer.Count)));
     }
 
-    private static long Steps(Driver driver, OrderLocation order) =>
-        Math.Abs((long)driver.X - order.X) + Math.Abs((long)driver.Y - order.Y);
+    private static long Steps(Driver driver, OrderLocation order)
+    {
+        return Math.Abs((long)driver.X - order.X) + Math.Abs((long)driver.Y - order.Y);
+    }
 }
