@@ -1,4 +1,5 @@
 using Maxim_Technology;
+using MaximTechnology.Web;
 using MaximTechnology.Web.Extensions;
 using DriverResponse = MaximTechnology.Web.Dto.DriverResponse;
 
@@ -17,7 +18,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.MapPost("/drivers/nearest", async (OrderRequest order, UseCaseOrder useCaseOrder) =>
     {
@@ -43,5 +43,10 @@ app.MapPost("/drivers/location", (DriverUpSert driver, UseCaseDriver useCaseDriv
     .Produces<string>()
     .Produces<string>(StatusCodes.Status400BadRequest);
 
+
+var limit = int.Parse(builder.Configuration.GetSection("Settings")["ParallelLimit"]);
+if (limit <= 0) throw new ArgumentException();
+
+app.UseMiddleware<ParallelLimitMiddleware>(limit);
 
 app.Run();

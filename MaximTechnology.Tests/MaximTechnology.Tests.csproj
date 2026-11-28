@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
-        <RootNamespace>MaxixTechonoly.Tests</RootNamespace>
+        <RootNamespace>MaximTechnology.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +22,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\MaximTechnology\MaximTechnology.csproj" />
+        <ProjectReference Include="..\MaximTechnology.Web\MaximTechnology.Web.csproj" />
     </ItemGroup>
 
 </Project>

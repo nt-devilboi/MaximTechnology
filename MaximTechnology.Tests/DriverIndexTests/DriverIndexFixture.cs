@@ -1,7 +1,7 @@
 using Maxim_Technology;
 using Maxim_Technology.Strategies;
 
-namespace MaxixTechonoly.Tests.DriverIndexTests;
+namespace MaximTechnology.Tests.DriverIndexTests;
 
 public abstract class DriverIndexFixture(Func<Map, DriverIndex> createIndex)
 {
