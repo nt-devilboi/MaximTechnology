@@ -20,14 +20,17 @@ public class UseCaseDriver(Map map, DriverIndex driverIndex, ILog log)
                 return new DriverUpsertResponse(Reasons: "Координаты некорректны");
             }
 
-            var exists = driverIndex.Contains(driver.Id);
-            if (!driverIndex.Upsert(new Driver(driver.Id, driver.X, driver.Y)))
+            var state = driverIndex.Upsert(new Driver(driver.Id, driver.X, driver.Y));
+
+            if (state == State.Block)
             {
                 log.Warn("Клетка занята другим водителем: {Driver}", driver);
                 return new DriverUpsertResponse(Reasons: "Здесь уже находится другой водитель");
             }
 
-            return new DriverUpsertResponse(exists ? "Координаты успешно изменены" : "Координаты успешно добавлены");
+            return new DriverUpsertResponse(state == State.Updated
+                ? "Координаты успешно изменены"
+                : "Координаты успешно добавлены");
         }
         catch (Exception e)
         {

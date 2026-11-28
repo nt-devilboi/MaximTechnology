@@ -2,6 +2,13 @@ using MaximTechnology.Entity;
 
 namespace MaximTechnology.Strategies;
 
+public enum State
+{
+    Updated,
+    Added,
+    Block
+}
+
 public class DriverIndex(Map map)
 {
     public const int NearestCount = 5;
@@ -15,25 +22,26 @@ public class DriverIndex(Map map)
     internal Dictionary<Guid, Driver>.ValueCollection Drivers => _drivers.Values;
 
 
-    public bool Upsert(Driver driver)
+    public State Upsert(Driver driver)
     {
         lock (_lock)
         {
             var occupant = _grid[driver.X, driver.Y];
-            if (occupant is not null && occupant.Id != driver.Id) return false;
+            if (occupant is not null && occupant.Id != driver.Id) return State.Block;
 
-            if (_drivers.TryGetValue(driver.Id, out var old)) _grid[old.X, old.Y] = null;
+            var removed = false;
+            if (_drivers.TryGetValue(driver.Id, out var old))
+            {
+                _grid[old.X, old.Y] = null;
+                removed = true;
+            }
 
             _grid[driver.X, driver.Y] = driver;
             _drivers[driver.Id] = driver;
-            return true;
+            return removed ? State.Updated : State.Added;
         }
     }
 
-    public bool Contains(Guid driverId)
-    {
-        return _drivers.ContainsKey(driverId);
-    }
 
     public bool Remove(Guid driverId)
     {

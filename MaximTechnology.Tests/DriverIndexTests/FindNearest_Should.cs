@@ -38,7 +38,7 @@ public class FindNearest_Should(INearestSearch search) : DriverIndexFixture
             }
 
             var driver = new Driver(id, random.Next(map.X), random.Next(map.Y));
-            if (sut.Upsert(driver)) expected[id] = driver;
+            if (sut.Upsert(driver) != State.Block) expected[id] = driver;
         }
 
         for (var i = 0; i < 30; i++)
