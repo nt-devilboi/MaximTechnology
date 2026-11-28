@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Attributes;
-using Maxim_Technology;
 using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Benchmarks;

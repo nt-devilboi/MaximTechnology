@@ -9,4 +9,8 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Vostok.Logging.Abstractions" Version="1.0.33" />
+    </ItemGroup>
+
 </Project>

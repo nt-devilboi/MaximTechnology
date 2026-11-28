@@ -1,5 +1,3 @@
-using Maxim_Technology;
-
 namespace MaximTechnology.Strategies;
 
 public class RingDriverIndex(Map map) : DriverIndex(map)

@@ -1,4 +1,3 @@
-using Maxim_Technology;
 using MaximTechnology.Strategies;
 
 namespace MaximTechnology.Tests.DriverIndexTests;

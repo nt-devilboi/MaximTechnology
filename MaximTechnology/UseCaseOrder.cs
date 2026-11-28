@@ -1,26 +1,43 @@
 using System.Drawing;
-using MaximTechnology;
 using MaximTechnology.Strategies;
+using Vostok.Logging.Abstractions;
 
-namespace Maxim_Technology;
+namespace MaximTechnology;
 
-public class UseCaseOrder(Map map, DriverIndex driverIndex, RandomNumber randomNumber)
+public class UseCaseOrder(Map map, DriverIndex driverIndex, RandomNumber randomNumber, ILog log)
 {
+    private readonly ILog log = log.ForContext(nameof(UseCaseOrder));
+
     public async Task<DriverLocationResponse> Find(OrderRequest order)
     {
-        //todo: order.Id пригодится для логирования
-        var location = new OrderLocation(order.X, order.Y);
-        if (!map.Valid(location.X, location.Y)) return new DriverLocationResponse(Reasons: "Координаты некорректны");
-        var result = driverIndex.FindNearest(location);
+        try
+        {
+            var location = new OrderLocation(order.X, order.Y);
+            if (!map.Valid(location.X, location.Y))
+            {
+                log.Warn("Координаты заказа вне карты: {Order}", order);
+                return new DriverLocationResponse(Reasons: "Координаты некорректны");
+            }
 
-        var driver = result[await randomNumber.Next(result.Count)];
+            var drivers = driverIndex.FindNearest(location);
 
-        var route = RouteBuilder.Build(new Point(location.X, location.Y), new Point(driver.X, driver.Y));
+            if (drivers.Count == 0) return new DriverLocationResponse();
 
-        return new DriverLocationResponse(
-            new DriverResponse(driver,
-                route.Points.Count - 1,
-                route.Points.Select(x => new PointRecord(x.X, x.Y)).ToList()));
+            var driver = drivers[await randomNumber.Next(drivers.Count)];
+
+
+            var route = RouteBuilder.Build(new Point(location.X, location.Y), new Point(driver.X, driver.Y));
+
+            return new DriverLocationResponse(
+                new DriverResponse(driver,
+                    route.Points.Count - 1,
+                    route.Points.Select(x => new PointRecord(x.X, x.Y)).ToList()));
+        }
+        catch (Exception e)
+        {
+            log.Error(e, "Не удалось подобрать водителя для заказа {Order}", order);
+            throw;
+        }
     }
 }
 
