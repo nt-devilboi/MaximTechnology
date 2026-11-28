@@ -21,6 +21,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapDriverEndpoints();
 
+
 var limit = int.Parse(builder.Configuration.GetSection("Settings")["ParallelLimit"]);
 if (limit <= 0) throw new ArgumentException();
 app.UseMiddleware<ParallelLimitMiddleware>(limit);
