@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>MaximTechnology</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <!-- для net6.0 по умолчанию C# 10, а в коде primary constructors и collection expressions -->
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Vostok.Logging.Abstractions" Version="1.0.33"/>
+    </ItemGroup>
+
+</Project>
